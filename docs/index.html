@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Concordia-Rennbahn Moosburg</title>
+<meta name="description" content="3D-Modell der Concordia-Rennbahn in Moosburg, Stand 1926 bis 1929, mit den Maßen und ihrer Herkunft.">
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="tokens.css">
+<style>
+  @font-face {
+    font-family: "Source Serif 4 Variable";
+    src: url("fonts/source-serif-4-latin-opsz-normal.woff2") format("woff2");
+    font-weight: 200 900;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: "Atkinson Hyperlegible Next Variable";
+    src: url("fonts/atkinson-hyperlegible-next-latin-wght-normal.woff2") format("woff2");
+    font-weight: 200 800;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--color-cream);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    line-height: 1.5;
+  }
+
+  .rainbow-stripe { display: flex; height: 4px; }
+  .rainbow-stripe > span { flex: 1; }
+  .rainbow-stripe > span:nth-child(1) { background: var(--color-rb-1); }
+  .rainbow-stripe > span:nth-child(2) { background: var(--color-rb-2); }
+  .rainbow-stripe > span:nth-child(3) { background: var(--color-rb-3); }
+  .rainbow-stripe > span:nth-child(4) { background: var(--color-rb-4); }
+  .rainbow-stripe > span:nth-child(5) { background: var(--color-rb-5); }
+  .rainbow-stripe > span:nth-child(6) { background: var(--color-rb-6); }
+  .rainbow-stripe > span:nth-child(7) { background: var(--color-rb-7); }
+  .rainbow-stripe > span:nth-child(8) { background: var(--color-rb-8); }
+  .rainbow-stripe > span:nth-child(9) { background: var(--color-rb-9); }
+
+  .kopf {
+    background: var(--color-thema-erdbraun);
+    color: var(--color-cream);
+    padding: 1.25rem 1.5rem 1.375rem;
+  }
+  .kopf h1 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(1.875rem, 3.6vw, var(--text-display-2));
+    font-weight: 600;
+    line-height: 1.1;
+  }
+  .kopf p { margin: 0.375rem 0 0; color: var(--color-gold-200); }
+
+  .buehne {
+    position: relative;
+    height: 62svh;
+    min-height: 20rem;
+    background: var(--color-cream-dark);
+  }
+  .buehne canvas { display: block; width: 100%; height: 100%; }
+  .buehne__status {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    padding: 1.5rem;
+    text-align: center;
+    color: var(--color-ink-soft);
+  }
+  .buehne__status[hidden] { display: none; }
+  .hinweis {
+    margin: 0;
+    padding: 0.5rem 1.5rem;
+    border-top: 1px solid var(--color-ink-line);
+    color: var(--color-ink-muted);
+    font-size: 0.875rem;
+  }
+  .hinweis--touch { display: none; }
+  @media (pointer: coarse) {
+    .hinweis--maus { display: none; }
+    .hinweis--touch { display: block; }
+  }
+
+  .masse { padding: 1.5rem; }
+  .masse h2 {
+    margin: 0 0 0.75rem;
+    font-family: var(--font-display);
+    font-size: var(--text-display-4);
+    font-weight: 600;
+    line-height: 1.2;
+  }
+  table { width: 100%; border-collapse: collapse; font-size: 0.9375rem; }
+  th, td { padding: 0.25rem 0; text-align: left; font-weight: 400; vertical-align: baseline; }
+  thead th { color: var(--color-ink-muted); font-size: 0.875rem; }
+  tbody th[scope="rowgroup"] {
+    padding-top: 1rem;
+    border-bottom: 1px solid var(--color-ink-line);
+    font-family: var(--font-display);
+    font-size: 1.0625rem;
+    font-weight: 600;
+  }
+  .mass {
+    padding-inline: 1rem;
+    text-align: right;
+    white-space: nowrap;
+    font-variant-numeric: lining-nums tabular-nums;
+  }
+  .herkunft { color: var(--color-ink-muted); font-size: 0.875rem; white-space: nowrap; }
+  .herkunft--belegt { color: var(--color-ink); font-weight: 600; }
+  .herkunft--annahme { font-style: italic; }
+  .masse p { margin: 1rem 0 0; color: var(--color-ink-soft); font-size: 0.875rem; }
+
+  /* Tabelle neben der Ansicht: So zoomt das Mausrad im Modell, ohne die Seite am Scrollen zu hindern. */
+  @media (min-width: 60rem) {
+    body { display: grid; grid-template-rows: auto auto minmax(0, 1fr); height: 100svh; }
+    main { display: grid; grid-template-columns: minmax(0, 1fr) 26rem; min-height: 0; }
+    .ansicht { display: grid; grid-template-rows: minmax(0, 1fr) auto; min-height: 0; }
+    .buehne { height: auto; }
+    .masse { overflow-y: auto; border-left: 1px solid var(--color-ink-line); }
+  }
+</style>
+<script type="importmap">
+{
+  "imports": {
+    "three": "./vendor/three/build/three.module.js",
+    "three/addons/": "./vendor/three/examples/jsm/"
+  }
+}
+</script>
+</head>
+<body>
+<div class="rainbow-stripe" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+<header class="kopf">
+  <h1>Concordia-Rennbahn Moosburg</h1>
+  <p>3D-Modell der Rad- und Motorradrennbahn, Stand 1926 bis 1929</p>
+</header>
+<main>
+  <section class="ansicht" aria-label="3D-Ansicht">
+    <div class="buehne">
+      <div class="buehne__status" role="status">Modell wird geladen</div>
+    </div>
+    <p class="hinweis hinweis--maus">Ziehen dreht die Ansicht, das Mausrad zoomt, die rechte Maustaste verschiebt.</p>
+    <p class="hinweis hinweis--touch">Ein Finger dreht die Ansicht, zwei Finger zoomen und verschieben.</p>
+  </section>
+  <section class="masse">
+    <h2>Maße im Modell</h2>
+    <!-- masse:anfang -->
+    <table>
+    <thead><tr><th scope="col">Bauteil</th><th scope="col" class="mass">Maß</th><th scope="col">Herkunft</th></tr></thead>
+    <tbody>
+    <tr><th scope="rowgroup" colspan="3">Bahn</th></tr>
+    <tr><th scope="row">Länge an der Messlinie</th><td class="mass">500 m</td><td class="herkunft herkunft--belegt">belegt</td></tr>
+    <tr><th scope="row">Fahrbahnbreite</th><td class="mass">7 m</td><td class="herkunft herkunft--belegt">belegt</td></tr>
+    <tr><th scope="row">Überhöhung, Kurve</th><td class="mass">4,20 m</td><td class="herkunft herkunft--belegt">belegt</td></tr>
+    <tr><th scope="row">Überhöhung, Gerade</th><td class="mass">1,0 m</td><td class="herkunft herkunft--annahme">Annahme</td></tr>
+    <tr><th scope="row">Kurvenradius</th><td class="mass">40 m</td><td class="herkunft">Luftbild</td></tr>
+    <tr><th scope="row">Außenmaß</th><td class="mass">215 × 94 m</td><td class="herkunft">Luftbild</td></tr>
+    </tbody>
+    <tbody>
+    <tr><th scope="rowgroup" colspan="3">Betontribüne</th></tr>
+    <tr><th scope="row">Länge eines Rahmens</th><td class="mass">13,4 m</td><td class="herkunft">Foto</td></tr>
+    <tr><th scope="row">Höhe hinten, vorn</th><td class="mass">5,7 m, 2,3 m</td><td class="herkunft">Foto</td></tr>
+    <tr><th scope="row">Stütze am Fuß, am Hals</th><td class="mass">1,2 m, 0,8 m</td><td class="herkunft">Foto</td></tr>
+    <tr><th scope="row">Stützendicke</th><td class="mass">0,5 m</td><td class="herkunft herkunft--annahme">Annahme</td></tr>
+    <tr><th scope="row">Anzahl Rahmen</th><td class="mass">4</td><td class="herkunft">Foto</td></tr>
+    <tr><th scope="row">Abstand der Rahmen</th><td class="mass">4,5 m</td><td class="herkunft herkunft--annahme">Annahme</td></tr>
+    <tr><th scope="row">Sitzreihen</th><td class="mass">12</td><td class="herkunft herkunft--annahme">Annahme</td></tr>
+    </tbody>
+    <tbody>
+    <tr><th scope="rowgroup" colspan="3">Turm</th></tr>
+    <tr><th scope="row">Grundfläche</th><td class="mass">3,2 × 3,2 m</td><td class="herkunft">Foto</td></tr>
+    <tr><th scope="row">Wandhöhe</th><td class="mass">3,3 m</td><td class="herkunft">Foto</td></tr>
+    <tr><th scope="row">Dachhöhe</th><td class="mass">3,0 m</td><td class="herkunft">Foto</td></tr>
+    </tbody>
+    <tbody>
+    <tr><th scope="rowgroup" colspan="3">Zaun und Wall</th></tr>
+    <tr><th scope="row">Zaunhöhe</th><td class="mass">1,3 m</td><td class="herkunft">Foto</td></tr>
+    <tr><th scope="row">Höhe der Wallkrone</th><td class="mass">4,4 m</td><td class="herkunft herkunft--annahme">Annahme</td></tr>
+    </tbody>
+    </table>    <!-- masse:ende -->
+    <p><strong>Belegt:</strong> auf einer zeitgenössischen Werbekarte und im Text des Heimatmuseums genannt. <strong>Luftbild, Foto:</strong> daraus abgeleitet, bei der Tribüne grob auf ein Viertel genau. <strong>Annahme:</strong> geschätzt, bis vor Ort gemessen wird.</p>
+    <p>Noch nicht im Modell: Holztribüne, Fahnenmasten, Reklame, Amperbrücke und Umgebung. Stand: 2. November 2026.</p>
+  </section>
+</main>
+<script type="module">
+  import * as THREE from "three";
+  import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+  import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+
+  const buehne = document.querySelector(".buehne");
+  const status = document.querySelector(".buehne__status");
+  const grund = getComputedStyle(document.documentElement).getPropertyValue("--color-cream-dark").trim();
+
+  function fehler(grund) {
+    console.error(grund);
+    status.hidden = false;
+    status.textContent = "Die 3D-Ansicht lässt sich in diesem Browser nicht anzeigen. Die Maße stehen in der Tabelle.";
+  }
+
+  let renderer;
+  try {
+    renderer = new THREE.WebGLRenderer({ antialias: true });
+  } catch {
+    fehler();
+    throw new Error("WebGL nicht verfügbar");
+  }
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFShadowMap;
+  buehne.prepend(renderer.domElement);
+  renderer.domElement.setAttribute("role", "img");
+  renderer.domElement.setAttribute("aria-label", "Bewegliches 3D-Modell der Rennbahn mit Betontribüne und Turm");
+
+  const szene = new THREE.Scene();
+  szene.background = new THREE.Color(grund);
+  szene.fog = new THREE.Fog(grund, 260, 560);
+  szene.add(new THREE.HemisphereLight(0xffffff, 0x8a8470, 1.6));
+
+  // Sonne im Westsüdwesten wie in rendern.py, der Zaun wirft Schatten auf die Bahn
+  const sonne = new THREE.DirectionalLight(0xffffff, 3);
+  sonne.position.set(-140, 160, 90);
+  sonne.castShadow = true;
+  sonne.shadow.mapSize.set(2048, 2048);
+  Object.assign(sonne.shadow.camera, { left: -170, right: 170, top: 170, bottom: -170, near: 10, far: 500 });
+  sonne.shadow.normalBias = 0.3;
+  szene.add(sonne);
+
+  const kamera = new THREE.PerspectiveCamera(36, 1, 1, 2000);
+  const steuerung = new OrbitControls(kamera, renderer.domElement);
+  steuerung.enableDamping = true;
+  steuerung.screenSpacePanning = false;
+  steuerung.minDistance = 12;
+  steuerung.maxDistance = 420;
+  steuerung.maxPolarAngle = Math.PI * 0.485;
+
+  // Von Westen: die Tribünenrahmen vorn, das ganze Oval dahinter. Schmale Fenster brauchen mehr Abstand.
+  function startansicht(format) {
+    const abstand = Math.min(steuerung.maxDistance, 250 * Math.max(1, 1.25 / format));
+    const richtung = THREE.MathUtils.degToRad(-70);
+    const neigung = THREE.MathUtils.degToRad(24);
+    steuerung.target.set(-10, 0, 0);
+    kamera.position.set(
+      -10 + abstand * Math.sin(richtung) * Math.cos(neigung),
+      abstand * Math.sin(neigung),
+      abstand * Math.cos(richtung) * Math.cos(neigung),
+    );
+  }
+
+  let geplant = false;
+  function zeichnen() {
+    if (geplant) return;
+    geplant = true;
+    requestAnimationFrame(() => {
+      geplant = false;
+      // Nicht über das Gelände hinaus verschieben
+      if (steuerung.target.length() > 130) steuerung.target.setLength(130);
+      const bewegt = steuerung.update();
+      // Der Nebel wandert mit, damit das Modell beim Herauszoomen nicht verschwindet
+      const abstand = kamera.position.distanceTo(steuerung.target);
+      szene.fog.near = abstand + 60;
+      szene.fog.far = abstand + 360;
+      renderer.render(szene, kamera);
+      if (bewegt) zeichnen();
+    });
+  }
+  steuerung.addEventListener("change", zeichnen);
+
+  let gesetzt = false;
+  new ResizeObserver(() => {
+    const { clientWidth: b, clientHeight: h } = buehne;
+    renderer.setSize(b, h, false);
+    kamera.aspect = b / h;
+    kamera.updateProjectionMatrix();
+    if (!gesetzt) {
+      startansicht(kamera.aspect);
+      gesetzt = true;
+    }
+    zeichnen();
+  }).observe(buehne);
+
+  new GLTFLoader().load("rennbahn.glb", (gltf) => {
+    const schaerfe = renderer.capabilities.getMaxAnisotropy();
+    gltf.scene.traverse((o) => {
+      if (!o.isMesh) return;
+      o.receiveShadow = true;
+      o.castShadow = o.name !== "boden" && o.name !== "innenfeld";
+      if (o.material.map) o.material.map.anisotropy = schaerfe;
+    });
+    szene.add(gltf.scene);
+    status.hidden = true;
+    zeichnen();
+  }, undefined, fehler);
+</script>
+</body>
+</html>
