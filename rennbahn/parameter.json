@@ -1,0 +1,50 @@
+{
+  "bahn": {
+    "laenge": {"wert": 500, "status": "belegt", "quelle": "Werbekarte 00000072klein, Museumstext"},
+    "breite": {"wert": 7, "status": "belegt", "quelle": "Werbekarte 00000072klein, Museumstext"},
+    "ueberhoehung": {"wert": 4.2, "status": "belegt", "quelle": "Werbekarte 00000072klein, Museumstext"},
+    "kurvenradius": {"wert": 40, "status": "luftbild", "quelle": "Luftbild 1945, Radius an der Messlinie"},
+    "uebergang": {"wert": 30, "status": "annahme", "quelle": "Länge des Übergangs von Gerade zu Kurve"},
+    "azimut": {"wert": 16.8, "status": "luftbild", "quelle": "Luftbild 1945, Längsachse östlich von Nord"},
+    "ueberhoehung_gerade": {"wert": 1.0, "status": "annahme", "quelle": "Fotos der Geraden, 0470, Thalbach-3"},
+    "profil_linear": {"wert": 0.45, "status": "annahme", "quelle": "Querschnitt wird nach oben steiler, 13-01-0030, 13-01-0035"},
+    "messlinie_abstand": {"wert": 0.3, "status": "annahme", "quelle": "Abstand Messlinie von der Innenkante"},
+    "hoehe_innenkante": {"wert": 0.2, "status": "annahme", "quelle": "Innenkante über dem Innenfeld"},
+    "kiesstreifen": {"wert": 5, "status": "annahme", "quelle": "Kies innen an der Bahn, 13-01-0026, Thalbach-3"},
+    "plattform": {"wert": 1.5, "status": "foto", "quelle": "Streifen zwischen Zaun und Wall, Bild-0078"},
+    "boeschung": {"wert": 1.5, "status": "annahme", "quelle": "Erdwall außen, Breite je Meter Höhe, Bild-0078"},
+    "wall_krone": {"wert": 4.4, "status": "annahme", "quelle": "Wallkrone rundum auf Höhe der Kurvenaußenkante: auf der Geraden sichtbar höher als der Zaun (Bild-0078), in der Kurve nicht (13-01-0015)"},
+    "wall_kronenbreite": {"wert": 2, "status": "annahme", "quelle": "Bild-0078"},
+    "wall_offen_von": {"wert": 255, "status": "annahme", "quelle": "kein Wall an Tribüne und Turm, Gerippe, Thalbach-3"},
+    "wall_offen_bis": {"wert": 345, "status": "foto", "quelle": "Wall verdeckt die Tribüne in Thalbach-3 nicht, Erdhaufen in 00000006Ü niedrig"}
+  },
+  "zaun": {
+    "hoehe": {"wert": 1.3, "status": "foto", "quelle": "Personen am Zaun, 0470"},
+    "weiss_laenge": {"wert": 24, "status": "foto", "quelle": "weiße Tafeln um den Turm, Thalbach-3, 12-01-102"}
+  },
+  "tribuene": {
+    "s_mitte": {"wert": 285, "status": "foto", "quelle": "Bahnkilometer der Tribünenmitte: Südende der Westgeraden, Bild-0078 und Thalbach-3, Thalbach-4; Gebäude nahe der Brücke im Luftbild 1956"},
+    "abstand_zaun": {"wert": 1.0, "status": "annahme", "quelle": "Zaun bis vordere Kragarmspitze, Thalbach-3"},
+    "rahmen": {"wert": 4, "status": "foto", "quelle": "Perspektive in Gerippe, schwach"},
+    "achsabstand": {"wert": 4.5, "status": "annahme", "quelle": "Perspektive in Gerippe, schwach"},
+    "dicke": {"wert": 0.5, "status": "annahme", "quelle": "geschätzt, schwach"},
+    "laenge": {"wert": 13.4, "status": "foto", "quelle": "Gerippe, skaliert über Stützenfuß, Blick laut Fluchtpunkt etwa 13° schräg"},
+    "hoehe_hinten": {"wert": 5.7, "status": "foto", "quelle": "Gerippe, skaliert über Stützenfuß"},
+    "hoehe_vorn": {"wert": 2.3, "status": "foto", "quelle": "Gerippe, skaliert über Stützenfuß"},
+    "kragarm_hinten": {"wert": 1.7, "status": "foto", "quelle": "Gerippe"},
+    "kragarm_vorn": {"wert": 1.5, "status": "foto", "quelle": "Gerippe"},
+    "beine": {"wert": [2.1, 6.8, 11.2], "status": "foto", "quelle": "Gerippe, Abstand von der vorderen Spitze"},
+    "fuss": {"wert": 1.2, "status": "anker", "quelle": "2025 07 22 Stütze, Verhältnis 2,4 : 1 bei rund 2,9 m Raumhöhe; vor Ort messen"},
+    "hals": {"wert": 0.8, "status": "foto", "quelle": "2025 07 22 Stütze, auch Gerippe"},
+    "traegerhoehe": {"wert": 1.0, "status": "foto", "quelle": "00000006Ü"},
+    "reihen": {"wert": 12, "status": "annahme", "quelle": "7 sichtbar in Thalbach-3, schwach"}
+  },
+  "turm": {
+    "seite": {"wert": 3.2, "status": "foto", "quelle": "über Personen und Zaun, Wang, Thalbach-3"},
+    "wand": {"wert": 3.3, "status": "foto", "quelle": "über Personen und Zaun, Wang, Thalbach-3"},
+    "dach": {"wert": 3.0, "status": "foto", "quelle": "Verhältnis Wand zu Dach, Thalbach-8"},
+    "fensterband": {"wert": 1.1, "status": "foto", "quelle": "13-01-0010Ü, Wang"},
+    "abstand_zaun": {"wert": 1.2, "status": "annahme", "quelle": "Thalbach-3"},
+    "abstand_tribuene": {"wert": 1.0, "status": "annahme", "quelle": "Thalbach-3"}
+  }
+}
